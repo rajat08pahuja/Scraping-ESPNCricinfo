@@ -98,7 +98,6 @@ function cb1(err, response, html) {
 
                 // Getting the data for each batsman
                 let batsmanName = chSelector(tabledata[0]).find('a').text().trim();
-                let batsmanStatus = chSelector(tabledata[1]).find('span').text().trim();
                 let batsmanRuns = chSelector(tabledata[2]).text().trim();
                 let batsmanBalls = chSelector(tabledata[3]).text().trim();
                 let batsman4s = chSelector(tabledata[5]).text().trim();
@@ -116,7 +115,6 @@ function cb1(err, response, html) {
                     fours: batsman4s,
                     sixes: batsman6s,
                     strikerate: batsmansr,
-                    status : batsmanStatus
                 };
 
                 // bastmanArr will be used in case the json file for the batsman is created for the first time
@@ -130,7 +128,6 @@ function cb1(err, response, html) {
                     fours: batsman4s,
                     sixes: batsman6s,
                     strikerate: batsmansr,
-                    status : batsmanStatus
                 }];
 
 
@@ -141,7 +138,8 @@ function cb1(err, response, html) {
                     let outputContent = JSON.stringify(batsmanArr);
                     fs.writeFileSync(batsmanFilePath, outputContent);
                 } else {
-                    let batsmanJSON = require(batsmanFilePath);
+                    let batsmanFile = fs.readFileSync(batsmanFilePath);
+                    batsmanJSON = JSON.parse(batsmanFile);
                     batsmanJSON.push(batsmanObj);
                     let updatedContent = JSON.stringify(batsmanJSON);
                     // Updating the content by pushing batsmanObj
